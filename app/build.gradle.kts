@@ -52,11 +52,10 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation("androidx.core:core-splashreen:1.0.0")
+    val nav_version = "2.8.3"
 
-    val nav_version = "2.8.2"
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+    // Views/Fragments integration
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
-
-    implementation("de.hdodenhof:circleimageview:3.1.0")
 }

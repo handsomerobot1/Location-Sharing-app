@@ -9,24 +9,28 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.locationsharingapp.R
 import com.example.locationsharingapp.databinding.ActivityRegisterBinding
 import com.example.locationsharingapp.viewmodel.AthenticationViewModel
+import com.example.locationsharingapp.viewmodel.FireStoreViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
     private lateinit var authenticationViewModel: AthenticationViewModel
+    private lateinit var fireStoreViewModel: FireStoreViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         authenticationViewModel = ViewModelProvider(this).get(AthenticationViewModel::class.java)
+        fireStoreViewModel = ViewModelProvider(this).get(FireStoreViewModel::class.java)
 
         binding.registerBtn.setOnClickListener {
             val name = binding.displayNameEt.text.toString()
             val email = binding.emailEt.text.toString()
             val password = binding.passwordEt.text.toString()
             val confirmPassword = binding.conPasswordEt.text.toString()
+            val location = "Don't found any location yet"
 
             if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                 Toast.makeText(this, "Please enter all details", Toast.LENGTH_SHORT).show()
@@ -39,6 +43,7 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
             } else {
                 authenticationViewModel.register(email, password, {
+                    fireStoreViewModel.saveUser(this, authenticationViewModel.getCurrentUserId(), name, email, location)
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
 

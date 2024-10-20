@@ -34,10 +34,6 @@ class MainActivity : AppCompatActivity() {
         binding.drawerNav.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.logout -> {
-                    Firebase.auth.signOut()
-                    startActivity(
-                        Intent(this, LoginActivity::class.java)
-                    )
                     finish()
                 }
             }

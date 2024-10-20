@@ -25,13 +25,30 @@ class LoginActivity : AppCompatActivity() {
 
             val email = binding.emailEt.text.toString()
             val password = binding.passwordEt.text.toString()
-            authenticationViewModel.login(email, password, {
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            }, {
-                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-            })
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show()
+            }else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Toast.makeText(this, "Please enter valid email", Toast.LENGTH_SHORT).show()
+            }
+            else if (password.length < 6) {
+                Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                authenticationViewModel.login(email, password, {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                }, {
+                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                })
+            }
         }
+        binding.registerTxt.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
+        }
+        binding.forgotpass.setOnClickListener {
+           Toast.makeText(this, "Forgot Password", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     override fun onStart() {

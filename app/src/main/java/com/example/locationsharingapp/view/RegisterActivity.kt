@@ -23,16 +23,32 @@ class RegisterActivity : AppCompatActivity() {
         authenticationViewModel = ViewModelProvider(this).get(AthenticationViewModel::class.java)
 
         binding.registerBtn.setOnClickListener {
+            val name = binding.displayNameEt.text.toString()
             val email = binding.emailEt.text.toString()
             val password = binding.passwordEt.text.toString()
-            authenticationViewModel.register(email, password,{
-            startActivity(Intent(this, MainActivity::class.java))
-                finish()
+            val confirmPassword = binding.conPasswordEt.text.toString()
 
-            },{
-                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-            })
+            if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                Toast.makeText(this, "Please enter all details", Toast.LENGTH_SHORT).show()
+            } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Toast.makeText(this, "Please enter valid email", Toast.LENGTH_SHORT).show()
+            } else if (password.length < 6) {
+                Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT)
+                    .show()
+            } else if (password != confirmPassword) {
+                Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
+            } else {
+                authenticationViewModel.register(email, password, {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
 
+                }, {
+                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                })
+            }
+        }
+        binding.loginTxt.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
         }
     }
     override fun onStart() {

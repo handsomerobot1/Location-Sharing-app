@@ -35,8 +35,9 @@ class FireStoreViewModel : ViewModel() {
             .addOnFailureListener { e ->
                 Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
             }
+    }
 
-        fun getAllUsers(contex: Context, callback: (List<User>) -> Unit) {
+        fun getAllUsers(context: Context, callback: (List<User>) -> Unit) {
             usersCollection.get()
                 .addOnSuccessListener {
                     val userList = mutableListOf<User>()
@@ -54,7 +55,7 @@ class FireStoreViewModel : ViewModel() {
                 }
         }
 
-    }
+
 
     fun updateUser(context: Context, userId: String, displayName: String, location: String) {
         val user = hashMapOf(
@@ -110,6 +111,7 @@ class FireStoreViewModel : ViewModel() {
                 Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                 callback(null)
             }
+    }
         fun getUserLocation(context: Context, userId: String, callback: (String) -> Unit) {
             usersCollection.document(userId).get()
                 .addOnSuccessListener {
@@ -123,4 +125,3 @@ class FireStoreViewModel : ViewModel() {
         }
 
     }
-}

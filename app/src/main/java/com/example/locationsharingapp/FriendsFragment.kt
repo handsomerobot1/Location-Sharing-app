@@ -89,7 +89,9 @@ class FriendsFragment : Fragment() {
     }
 
     private fun fetchUsers() {
-        fireStoreViewModel.getAllUser()
+        fireStoreViewModel.getAllUsers(requireContext()) {
+            userAdapter.updateData(it)
+        }
     }
 
     }

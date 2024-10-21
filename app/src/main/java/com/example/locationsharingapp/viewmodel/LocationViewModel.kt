@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.tasks.OnCompleteListener
 
-class locationViewModel : ViewModel() {
+class LocationViewModel : ViewModel() {
 
     private var fusedLocationClient: FusedLocationProviderClient? = null
 

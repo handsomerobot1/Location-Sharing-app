@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.locationsharingapp.adapter.UserAdapter
 import com.example.locationsharingapp.databinding.FragmentFriendsBinding
+import com.example.locationsharingapp.viewmodel.AthenticationViewModel
 import com.example.locationsharingapp.viewmodel.FireStoreViewModel
 import com.example.locationsharingapp.viewmodel.LocationViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -26,7 +27,7 @@ class FriendsFragment : Fragment() {
     private lateinit var binding: FragmentFriendsBinding
     private lateinit var fireStoreViewModel: FireStoreViewModel
     private lateinit var userAdapter: UserAdapter
-
+    private lateinit var authenticationViewModel: AthenticationViewModel
     private lateinit var locationViewModel: LocationViewModel
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -46,7 +47,7 @@ class FriendsFragment : Fragment() {
         binding = FragmentFriendsBinding.inflate(inflater, container, false)
 
         fireStoreViewModel = ViewModelProvider(this).get(FireStoreViewModel::class.java)
-
+        authenticationViewModel = ViewModelProvider(this).get(AthenticationViewModel::class.java)
         locationViewModel = ViewModelProvider(this).get(LocationViewModel::class.java)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         locationViewModel.initializeFusedLocationClient(fusedLocationClient)
@@ -91,6 +92,14 @@ class FriendsFragment : Fragment() {
     private fun fetchUsers() {
         fireStoreViewModel.getAllUsers(requireContext()) {
             userAdapter.updateData(it)
+        }
+    }
+    private fun getLocation() {
+        LocationViewModel.getLastLocation(requireContext()) {
+            // Save location to Firestore for the current user
+            authenticationViewModel.getCurrentUserId().let { userId ->
+                fireStoreViewModel.updateUserLocation(requireContext(),userId, it)
+            }
         }
     }
 

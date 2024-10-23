@@ -79,7 +79,7 @@ class FriendsFragment : Fragment() {
 
 
         binding.locationBtn.setOnClickListener{
-            startActivity(Intent(requireContext(), MapsActivity::class.java))
+            startActivity(Intent(requireContext(), MapsActivity::class.java)())
 
         }
 

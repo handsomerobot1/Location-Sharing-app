@@ -1,6 +1,8 @@
 package com.example.locationsharingapp.view
 
 import android.content.Intent
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -9,8 +11,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.locationsharingapp.R
 import com.example.locationsharingapp.databinding.ActivityMainBinding
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
+
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy {
@@ -51,6 +52,12 @@ class MainActivity : AppCompatActivity() {
                         Intent(this, LoginActivity::class.java)
                     )
                     finish()
+                }
+                R.id.friendsFragment -> {
+                    navController.navigate(R.id.friendsFragment)
+                }
+                R.id.profileFragment -> {
+                    navController.navigate(R.id.profileFragment)
                 }
             }
             true
